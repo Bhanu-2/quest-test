@@ -1,0 +1,100 @@
+apply plugin: 'com.android.application'
+apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+apply plugin: 'com.google.gms.google-services'
+
+/**************** Hermes Setup ********************/
+project.ext.react = [
+        enableHermes: false
+]
+def jscFlavor = 'org.webkit:android-jsc:+'
+def enableHermes = project.ext.react.get("enableHermes", false);
+/**************** End of Hermes Setup***************/
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+    compileOptions {
+                   sourceCompatibility 1.8
+                   targetCompatibility 1.8
+    }
+    defaultConfig {
+        applicationId "com.c7apps.CartApp"
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1 * 1000 + 0 * 10 + 3
+        versionName "1.0.3"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        release {
+            storeFile file('bankinfo.keystore')
+            storePassword 'amandeep123'
+            keyAlias 'bankinfo'
+            keyPassword 'amandeep123'
+        }
+    }
+    buildTypes {
+    
+        debug {
+           // applicationIdSuffix ".debug"
+           // versionNameSuffix ".debug"
+           resValue 'string', 'env', 'DEV'
+            resValue "string", "app_version", "${defaultConfig.versionName}${versionNameSuffix}"
+            resValue 'string', 'CodePushDeploymentKey', 'uI0VcYItZUP7jelFYaLtgPn3QAUy8I8JnXBn3'
+
+            manifestPlaceholders = [
+                    appIcon: "@mipmap/ic_launcher_debug",
+                    appIconRound: "@mipmap/ic_launcher_debug"
+            ]
+        }
+        release {
+            resValue 'string', 'env', 'PROD'
+            resValue "string", "app_version", "${defaultConfig.versionName}"
+            resValue 'string', 'CodePushDeploymentKey', 'Cl-Dp5uSu0mhPDKVhDXzNNWvAM17bKrN0G-fM'
+            manifestPlaceholders = [
+                    appIcon: "@mipmap/ic_launcher",
+                    appIconRound: "@mipmap/ic_launcher_round"
+            ]
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+        }
+    }
+
+
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.navigation:navigation-fragment:2.0.0'
+    implementation 'androidx.navigation:navigation-ui:2.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation "com.facebook.react:react-native:+"
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-splash-screen')
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    implementation project(":react-native-shared-preferences")
+    implementation project(':react-native-push-notification')
+    compile project(':RNSendIntentModule')
+
+    if (enableHermes) {
+        def hermesPath = "../../node_modules/hermes-engine/android/";
+        debugImplementation files(hermesPath + "hermes-debug.aar")
+        releaseImplementation files(hermesPath + "hermes-release.aar")
+    } else {
+        implementation jscFlavor
+    }
+}
+apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply plugin: 'com.google.gms.google-services'
+googleServices.disableVersionCheck = true

@@ -1,0 +1,46 @@
+{
+  "name": "CartApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "npx react-native start",
+    "android": "npx react-native run-android",
+    "staging-push-android": "appcenter codepush release-react -a amandeepkamboj321/CartApp -d Staging",
+    "prod-push-android": "appcenter codepush release-react -a amandeepkamboj321/CartApp -d Production",
+    "generate-staging-apk": "rm -rf android/app/build && cd android && ./gradlew clean && cd .. && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle  --assets-dest android/app/src/main/res && cd android && ./gradlew assembleDebug",
+    "generate-prod-apk": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/build/intermediates/res/merged/release/ && rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/* && cd android && ./gradlew assembleRelease && cd ..",
+    "app-center-list-keys": "appcenter codepush deployment list -a amandeepkamboj321/CartApp -k",
+    "app-center-list": "appcenter codepush deployment list -a amandeepkamboj321/CartApp"
+  },
+  "dependencies": {
+    "@react-navigation/native": "^5.9.4",
+    "@react-navigation/stack": "^5.14.4",
+    "appcenter": "4.1.0",
+    "appcenter-analytics": "4.1.0",
+    "appcenter-crashes": "4.1.0",
+    "autosuggest": "^0.0.2",
+    "axios": "^0.21.1",
+    "firebase": "^8.5.0",
+    "native-base": "^2.15.2",
+    "react": "^17.0.2",
+    "react-native": "^0.64.0",
+    "react-native-autocomplete-input": "^5.0.0",
+    "react-native-code-push": "^7.0.1",
+    "react-native-config": "luggit/react-native-config#master",
+    "react-native-gesture-handler": "^1.10.3",
+    "react-native-push-notification": "^7.3.1",
+    "react-native-safe-area-context": "^3.2.0",
+    "react-native-screens": "^3.1.1",
+    "react-native-send-intent": "^1.0.30",
+    "react-native-shared-preferences": "^1.0.2",
+    "react-native-splash-screen": "^3.2.0",
+    "react-native-uuid": "^2.0.1",
+    "react-native-vector-icons": "8.1.0",
+    "react-redux": "^7.2.6"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
+  }
+}
